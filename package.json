@@ -5,7 +5,7 @@
     "access": "public"
   },
   "bin": {
-    "nestjs-esm-fix": "./target/es6/cli.mjs"
+    "nestjs-esm-fix": "./target/es6/cli.js"
   },
   "description": "Patch Nestjs app ESM bundles to make them work RHRN",
   "type": "module",
