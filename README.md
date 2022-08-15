@@ -1,4 +1,9 @@
 # nestjs-esm-fix
+[![CI](https://github.com/antongolub/nestjs-esm-fix/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/antongolub/nestjs-esm-fix/actions/workflows/ci.yaml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/af8edb33072e8e033ce7/maintainability)](https://codeclimate.com/github/antongolub/nestjs-esm-fix/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/af8edb33072e8e033ce7/test_coverage)](https://codeclimate.com/github/antongolub/nestjs-esm-fix/test_coverage)
+[![npm (tag)](https://img.shields.io/npm/v/nestjs-esm-fix)](https://www.npmjs.com/package/nestjs-esm-fix)
+
 > Patch Nestjs app ESM bundles to make them work RHRN
 
 ## Problem
