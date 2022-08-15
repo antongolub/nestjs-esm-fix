@@ -1,3 +1,8 @@
+## [1.0.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.1...v1.0.2) (2022-08-15)
+
+### Fixes & improvements
+* fix: fix bin path ([1f7068f](https://github.com/antongolub/nestjs-esm-fix/commit/1f7068fe5a63c1aebcb339eee14b8bd59e16d0fa))
+
 ## [1.0.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.0...v1.0.1) (2022-08-15)
 
 ### Fixes & improvements
