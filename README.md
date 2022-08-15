@@ -21,7 +21,7 @@ __decorate([
 ], EventUnsafeController.prototype, "logEventBatch", null);
 ```
 
-2. openapi / class-validator DTOs are referenced by `require` API.
+2. openapi / class-validator DTOs are referenced by `require` API. https://github.com/microsoft/TypeScript/issues/43329
 ```js
 export class CspReportDto {
     static _OPENAPI_METADATA_FACTORY() {
