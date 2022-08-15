@@ -1,3 +1,8 @@
+## [1.0.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.0...v1.0.1) (2022-08-15)
+
+### Fixes & improvements
+* docs: add status badges ([94a1cc0](https://github.com/antongolub/nestjs-esm-fix/commit/94a1cc0f3f419cdb6aad80de63e947730c7c1c08))
+
 ## [1.0.0](https://github.com/antongolub/nestjs-esm-fix/compare/undefined...v1.0.0) (2022-08-15)
 
 ### Features
@@ -6,5 +11,3 @@
 
 ### Fixes & improvements
 * docs: add basic description ([8c23cab](https://github.com/antongolub/nestjs-esm-fix/commit/8c23cab684222d32b37385e1afc4288fd24eeed3))
-
-
