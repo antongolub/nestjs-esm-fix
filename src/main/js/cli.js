@@ -2,18 +2,22 @@
 
 import minimist from 'minimist'
 import { createRequire } from 'node:module'
-import {fix} from './index.js'
+import { fix } from './index.js'
 
-const densify = (obj) => (Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]), obj)
-const camelize = s => s.replace(/-./g, x => x[1].toUpperCase())
-const normalizeFlags = (flags = {}) => Object.entries(flags).reduce((acc, [k, v]) => {
-  if (k.startsWith('no-')) {
-    v = !v
-    k = k.slice(3)
-  }
+const densify = (obj) => (
+  Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]),
+  obj
+)
+const camelize = (s) => s.replace(/-./g, (x) => x[1].toUpperCase())
+const normalizeFlags = (flags = {}) =>
+  Object.entries(flags).reduce((acc, [k, v]) => {
+    if (k.startsWith('no-')) {
+      v = !v
+      k = k.slice(3)
+    }
 
-  return {...acc, [camelize(k)]: v}
-}, {})
+    return { ...acc, [camelize(k)]: v }
+  }, {})
 const _argv = minimist(process.argv.slice(2))
 const argv = normalizeFlags(_argv)
 
@@ -34,18 +38,16 @@ if (argv.help || argv.h) {
     nestjs-esm-fix target/**/*.js --no-openapi-type-ref
 `)
   process.exit(0)
-}
-
-else if (argv.v || argv.version) {
+} else if (argv.v || argv.version) {
   console.log(createRequire(import.meta.url)('../../../package.json').version)
   process.exit(0)
-}
-
-else {
-  await fix(densify({
-    cwd: argv.cwd || argv.C,
-    target: argv._[0],
-    openapiVar: argv.openapiVar,
-    openapiTypeRef: argv.openapiTypeRef
-  }))
+} else {
+  await fix(
+    densify({
+      cwd: argv.cwd || argv.C,
+      target: argv._[0],
+      openapiVar: argv.openapiVar,
+      openapiTypeRef: argv.openapiTypeRef,
+    }),
+  )
 }

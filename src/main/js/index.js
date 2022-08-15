@@ -1,4 +1,4 @@
-import {globby} from 'globby'
+import { globby } from 'globby'
 import fse from 'fs-extra'
 
 export const defaults = {
@@ -6,14 +6,14 @@ export const defaults = {
   openapiTypeRef: true,
 }
 
-export const fix = async ({target, cwd = process.cwd(), ..._opts}) => {
+export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
   if (!target) {
     throw new Error('target is required')
   }
 
-  const opts = {...defaults, ..._opts}
+  const opts = { ...defaults, ..._opts }
   const pattern = target.includes('*') ? target : `${target}/**/*`
-  const files = await globby(pattern, {onlyFiles: true, absolute: true, cwd})
+  const files = await globby(pattern, { onlyFiles: true, absolute: true, cwd })
 
   await Promise.all(files.map((file) => patch(file, opts)))
 
@@ -21,7 +21,7 @@ export const fix = async ({target, cwd = process.cwd(), ..._opts}) => {
 }
 
 export const patch = async (file, opts) => {
-  const contents = await fse.readFile(file, {encoding: 'utf8'})
+  const contents = await fse.readFile(file, { encoding: 'utf8' })
   let _contents = contents
 
   if (opts.openapiVar) {
@@ -51,12 +51,17 @@ const patchClassRequire = (contents) => {
   const aliases = []
   const _contents = contents.replaceAll(pattern, (_, $1, $2) => {
     const alias = `__${$2}`
-    aliases.push({source: $1, alias, ref: $2})
+    aliases.push({ source: $1, alias, ref: $2 })
     return alias
   })
 
   if (aliases.length > 0) {
-    return aliases.map(({source, alias, ref}) => `import { ${ref} as ${alias} } from '${source}';\n`) + _contents
+    return (
+      aliases.map(
+        ({ source, alias, ref }) =>
+          `import { ${ref} as ${alias} } from '${source}';\n`,
+      ) + _contents
+    )
   }
 
   return contents
