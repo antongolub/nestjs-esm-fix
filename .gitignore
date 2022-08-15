@@ -47,8 +47,11 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional npm cache directory
+# Npm
 .npm
+.npmrc
+.yarnrc
+.pnpmrc
 
 # Optional eslint cache
 .eslintcache
@@ -102,3 +105,25 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Temp
+temp
+
+# Docs
+docs
+
+# Coverage
+cc-reporter
+cc-reporter.*
+codeclimate.*
+coverage.*
+
+# Creds
+*.asc
+*.key
+*.pem
+*.cert
+
+# Bundles
+target
+buildstamp.json

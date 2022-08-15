@@ -1,0 +1,107 @@
+# This is a Github Workflow that runs tests on any push or pull request.
+# If the tests pass and this is a push to the master branch it also runs Semantic Release.
+name: CI
+on: [push, pull_request]
+jobs:
+  test_push:
+    name: Test on push
+    if: ${{ needs.init.outputs.skip == 'false' && github.event_name == 'push' }}
+    runs-on: ubuntu-20.04
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Push coverage
+        if: github.ref == 'refs/heads/master'
+        run: |
+          npx ggcp lcov.info https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git/coverage/${{ github.sha }} --cwd=${{ github.workspace }}/coverage --message='chore: push coverage'
+
+  test_pr:
+    if: ${{ needs.init.outputs.skip == 'false' && github.event_name == 'pull_request' }}
+    name: Test PR (Node v${{ matrix.node-version }}, OS ${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04 ]
+        node-version: [ 16, 18 ]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install deps
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests
+        timeout-minutes: 1
+        run: yarn test
+
+  release:
+    name: Release
+    # https://github.community/t/trigger-job-on-tag-push-only/18076
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: test_push
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Docs
+        run: yarn docs
+
+#      - name: Codeclimate
+#        uses: paambaati/codeclimate-action@v3.0.0
+#        env:
+#          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+#        with:
+#          coverageLocations: |
+#            ${{ github.workspace }}/coverage/lcov.info:lcov
+
+      - name: Release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_COMMITTER_EMAIL: 'mailbox@antongolub.ru'
+          GIT_COMMITTER_NAME: 'antongolub'
+        run: npm_config_yes=true npx zx-semrel

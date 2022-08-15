@@ -1,0 +1,79 @@
+{
+  "name": "nestjs-esm-fix",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "nestjs-esm-fix": "./target/es6/cli.mjs"
+  },
+  "description": "Patch Nestjs app ESM bundles to make them work RHRN",
+  "type": "module",
+  "exports": "./target/es6/index.mjs",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf target docs coverage buildstamp.json",
+    "lint": "eslint src/**/*.{ts,js} scripts",
+    "lint:fix": "yarn lint --fix",
+    "format": "prettier --write \"scripts/**/*.js\" \"src/main/**/*.ts\" \"src/test/(js|ts)**/*.(t|j)s\"",
+    "test": "npm-run-all -p -l lint test:unit test:depcheck test:depaudit",
+    "test:unit": "c8 uvu ./src/test -i fixtures -i utils && c8 report -r lcov",
+    "test:it": "npx cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-modules\" npx glob-runner src/test/**/*.it.js",
+    "test:deps": "npm-run-all -p -l test:depcheck test:depauditfix",
+    "test:depcheck": "npm_config_yes=true npx -p depcheck  depcheck --ignore-patterns fixtures --ignores eslint-config-*",
+    "test:depaudit": "yarn audit --groups=dependencies --level=moderate; [[ $? -ge 4 ]] && exit 1 || exit 0",
+    "test:depauditfix": "npm_config_yes=true npx yarn-audit-fix --audit-level=moderate",
+    "test:report": "yarn test",
+    "prebuild": "yarn clean && npm_config_yes=true npx buildstamp --git --out.path buildstamp.json",
+    "build": "yarn build:es6",
+    "build:es6": "mkdir -p target/es6 && cp -r src/main/js/ target/es6/",
+    "docs": "mkdir -p docs && cp ./README.md ./docs/index.md",
+    "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
+    "postupdate": "yarn && yarn test:deps && yarn build && yarn test",
+    "updeps": "npm_config_yes=true npx npm-upgrade",
+    "publish:beta": "npm publish --no-git-tag-version --tag beta",
+    "publish:rc": "npm publish --no-git-tag-version --tag rc"
+  },
+
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "globby": "^13.1.2"
+  },
+  "devDependencies": {
+    "c8": "^7.12.0",
+    "@qiwi/npm-run-all": "^4.1.7",
+    "prettier": "^2.7.1",
+    "prettier-config-qiwi": "^1.7.2",
+    "rimraf": "^3.0.2",
+    "tempy": "^3.0.0",
+    "terser": "^5.14.2",
+    "uvu": "^0.5.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antongolub/nestjs-esm-fix.git"
+  },
+  "keywords": [
+    "tsc",
+    "esm",
+    "mjs",
+    "es2020",
+    "esnext",
+    "nestjs-esm-fix",
+    "tsc-es2020-fix"
+  ],
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "target"
+  ],
+  "author": "Anton Golub <antongolub@antongolub.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antongolub/nestjs-esm-fix/issues"
+  },
+  "homepage": "https://github.com/antongolub/nestjs-esm-fix/#readme",
+  "prettier": "prettier-config-qiwi"
+}
