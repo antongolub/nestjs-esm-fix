@@ -57,10 +57,12 @@ const patchClassRequire = (contents) => {
 
   if (aliases.length > 0) {
     return (
-      aliases.map(
-        ({ source, alias, ref }) =>
-          `import { ${ref} as ${alias} } from '${source}';\n`,
-      ) + _contents
+      aliases
+        .map(
+          ({ source, alias, ref }) =>
+            `import { ${ref} as ${alias} } from '${source}';\n`,
+        )
+        .join('') + _contents
     )
   }
 
