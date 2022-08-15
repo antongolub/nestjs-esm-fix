@@ -36,13 +36,19 @@ yarn add -D nestjs-esm-fix
 ## Usage
 ### CLI
 ```bash
-nestjs-esm-fix target
+nestjs-esm-fix target/**/*.js
 ```
+| Option               | Description                                                  | Default |
+|----------------------|--------------------------------------------------------------|---------|
+| `--openapi-var`      | Inject openapi variable. Set `--no-openapi-var` to disable.  | true    |
+| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.      | true    |
+
 ### JS API
 ```js
 import {fix} from 'nestjs-esm-fix'
 await fix({
-  cwd: './target',
+  cwd: '.',
+  target: 'target/**/*.js',
   openapiVar: true,
   openapiTypeRef: true,
 })

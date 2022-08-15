@@ -7,28 +7,32 @@ import {fix} from '../../main/js/index.js'
 
 const test = suite('index')
 const argv = process.argv
+const exit = process.exit
 
-test('fix() patches contents by required opts', async () => {
+process.exit = () => {}
+
+test('CLI patches contents by required opts', async () => {
   const temp = temporaryDirectory()
   const before = ``
   const after = ``
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
-  await fix({cwd: temp, target: '**/*'})
+
+  process.argv = [...argv.slice(0, 2), '**/*', '--cwd', temp, '--no-openapi-type-ref=true']
+  await import('../../main/js/cli.js#default')
   const result = await fse.readFile(path.join(temp, 'index.js'), {encoding: 'utf8'})
 
   assert.fixture(result, after)
 })
 
-test('fix() asserts arguments', async () => {
-  try {
-    await fix({})
-    assert.unreachable('should have thrown')
+test('CLI -h', async () => {
+  process.argv = [...argv.slice(0, 2), '--help']
+  await import('../../main/js/cli.js#help')
+})
 
-  } catch (err) {
-    assert.instance(err, Error)
-    assert.match(err.message, 'target is required')
-  }
+test('CLI -v', async () => {
+  process.argv = [...argv.slice(0, 2), '-v']
+  await import('../../main/js/cli.js#version')
 })
 
 test.run()
