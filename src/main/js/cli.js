@@ -4,11 +4,12 @@ import minimist from 'minimist'
 import { createRequire } from 'node:module'
 import {fix} from './index.js'
 
+const densify = (obj) => (Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]), obj)
 const camelize = s => s.replace(/-./g, x => x[1].toUpperCase())
 const normalizeFlags = (flags = {}) => Object.entries(flags).reduce((acc, [k, v]) => {
   if (k.startsWith('no-')) {
     v = !v
-    k = k.slice(5)
+    k = k.slice(3)
   }
 
   return {...acc, [camelize(k)]: v}
@@ -41,10 +42,10 @@ else if (argv.v || argv.version) {
 }
 
 else {
-  await fix({
+  await fix(densify({
     cwd: argv.cwd || argv.C,
     target: argv._[0],
     openapiVar: argv.openapiVar,
     openapiTypeRef: argv.openapiTypeRef
-  })
+  }))
 }
