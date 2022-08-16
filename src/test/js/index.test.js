@@ -31,7 +31,7 @@ import openapi from "@nestjs/swagger";
 
 export class CspReportDto {
   static _OPENAPI_METADATA_FACTORY() {
-    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () =>__CspReport} };
+    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => __CspReport } };
   }
 }
 __decorate([

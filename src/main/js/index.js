@@ -47,7 +47,7 @@ ${contents}`
 }
 
 const patchClassRequire = (contents) => {
-  const pattern = / require\("([^"]+)"\)\.(\w+) /gi
+  const pattern = /require\("([^"]+)"\)\.(\w+)/gi
   const aliases = []
   const _contents = contents.replaceAll(pattern, (_, $1, $2) => {
     const alias = `__${$2}`
