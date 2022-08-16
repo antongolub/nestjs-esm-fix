@@ -3,9 +3,8 @@ import * as assert from 'uvu/assert'
 import { temporaryDirectory } from 'tempy'
 import fse from 'fs-extra'
 import path from 'node:path'
-import { fix } from '../../main/js/index.js'
 
-const test = suite('index')
+const test = suite('cli')
 const argv = process.argv
 const exit = process.exit
 
