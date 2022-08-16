@@ -72,7 +72,6 @@ test('fix() returns contents as is if no occurrences found', async () => {
 test('fix() asserts arguments', async () => {
   try {
     await fix({})
-    assert.unreachable('should have thrown')
   } catch (err) {
     assert.instance(err, Error)
     assert.match(err.message, 'target is required')

@@ -18,7 +18,7 @@
     "lint": "prettier --write 'src/**/*.{js,json,ts}'",
     "lint:fix": "yarn lint",
     "test": "npm-run-all -p -l lint test:unit test:depcheck test:depaudit",
-    "test:unit": "c8 -x target uvu ./src/test -i fixtures && c8 report -r lcov",
+    "test:unit": "c8 -x target uvu ./src/test -i fixtures && c8 -x target report -r lcov",
     "test:deps": "npm-run-all -p -l test:depcheck test:depauditfix",
     "test:depcheck": "npm_config_yes=true npx -p depcheck depcheck --ignore-patterns fixtures",
     "test:depaudit": "yarn audit --groups=dependencies --level=moderate; [[ $? -ge 4 ]] && exit 1 || exit 0",
@@ -28,7 +28,6 @@
     "build": "yarn build:es6",
     "build:es6": "mkdir -p target/es6 && cp -R src/main/js/. target/es6",
     "docs": "mkdir -p docs && cp ./README.md ./docs/index.md",
-    "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn test:deps && yarn build && yarn test",
     "updeps": "npm_config_yes=true npx npm-upgrade",
     "publish:beta": "npm publish --no-git-tag-version --tag beta",
@@ -46,7 +45,6 @@
     "prettier-config-qiwi": "^1.7.2",
     "rimraf": "^3.0.2",
     "tempy": "^3.0.0",
-    "terser": "^5.14.2",
     "uvu": "^0.5.6"
   },
   "repository": {

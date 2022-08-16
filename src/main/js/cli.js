@@ -30,6 +30,7 @@ if (argv.help || argv.h) {
     --openapi-var       Inject openapi variable. Defaults to true, set 'no-' prefix to disable.
     --openapi-type-ref  Replace 'type: () => require' statements with 'import'. Defaults to true
     --cwd -C            Working directory. Defaults to process.cwd()
+    --target            Pattern to match files to fix. Defaults to '**/*'
     --help -h           Show help
     --version -v        Show version
 
@@ -45,7 +46,7 @@ if (argv.help || argv.h) {
   await fix(
     densify({
       cwd: argv.cwd || argv.C,
-      target: argv._[0],
+      target: argv.target || argv._[0],
       openapiVar: argv.openapiVar,
       openapiTypeRef: argv.openapiTypeRef,
     }),
