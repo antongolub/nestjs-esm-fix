@@ -1,3 +1,8 @@
+## [1.0.5](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.4...v1.0.5) (2022-08-16)
+
+### Fixes & improvements
+* fix: fix build:es6 ([f1423aa](https://github.com/antongolub/nestjs-esm-fix/commit/f1423aaa1b60a0106100bbeface94474dfe3bc28))
+
 ## [1.0.4](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.3...v1.0.4) (2022-08-16)
 
 ### Fixes & improvements
