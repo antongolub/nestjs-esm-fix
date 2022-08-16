@@ -1,3 +1,8 @@
+## [1.1.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.6...v1.1.0) (2022-08-16)
+
+### Features
+* feat: introduce `--target` option ([d842b99](https://github.com/antongolub/nestjs-esm-fix/commit/d842b990f3e19054267bab82317854306769fa42))
+
 ## [1.0.6](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.5...v1.0.6) (2022-08-16)
 
 ### Fixes & improvements
