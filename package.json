@@ -16,8 +16,7 @@
   "scripts": {
     "clean": "rimraf target docs coverage buildstamp.json",
     "lint": "prettier --write 'src/**/*.{js,json,ts}'",
-    "lint:fix": "yarn lint --fix",
-    "format": "prettier --write \"scripts/**/*.js\" \"src/main/**/*.ts\" \"src/test/(js|ts)**/*.(t|j)s\"",
+    "lint:fix": "yarn lint",
     "test": "npm-run-all -p -l lint test:unit test:depcheck test:depaudit",
     "test:unit": "c8 -x target uvu ./src/test -i fixtures && c8 report -r lcov",
     "test:deps": "npm-run-all -p -l test:depcheck test:depauditfix",
