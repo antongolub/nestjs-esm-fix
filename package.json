@@ -27,7 +27,7 @@
     "test:report": "yarn test",
     "prebuild": "yarn clean && npm_config_yes=true npx buildstamp --git --out.path buildstamp.json",
     "build": "yarn build:es6",
-    "build:es6": "mkdir -p target/es6 && cp -r src/main/js/ target/es6/",
+    "build:es6": "mkdir -p target/es6 && cp -r src/main/js/ target/es6",
     "docs": "mkdir -p docs && cp ./README.md ./docs/index.md",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn test:deps && yarn build && yarn test",
