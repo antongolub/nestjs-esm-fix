@@ -1,3 +1,8 @@
+## [1.0.6](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.5...v1.0.6) (2022-08-16)
+
+### Fixes & improvements
+* fix: relax regexp ([71a0419](https://github.com/antongolub/nestjs-esm-fix/commit/71a041943bf92ebc63f38353ce9e77ff57277382))
+
 ## [1.0.5](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.4...v1.0.5) (2022-08-16)
 
 ### Fixes & improvements
