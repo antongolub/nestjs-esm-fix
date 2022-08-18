@@ -1,3 +1,8 @@
+## [1.1.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.1.0...v1.1.1) (2022-08-18)
+
+### Fixes & improvements
+* docs: formatting ([7fac923](https://github.com/antongolub/nestjs-esm-fix/commit/7fac923942bedeffa2c96d79b751c30ef8030360))
+
 ## [1.1.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.0.6...v1.1.0) (2022-08-16)
 
 ### Features
