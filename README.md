@@ -4,7 +4,8 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/af8edb33072e8e033ce7/test_coverage)](https://codeclimate.com/github/antongolub/nestjs-esm-fix/test_coverage)
 [![npm (tag)](https://img.shields.io/npm/v/nestjs-esm-fix)](https://www.npmjs.com/package/nestjs-esm-fix)
 
-> Patch Nestjs app ESM bundles to make them work RHRN
+> Patch [Nestjs](https://github.com/nestjs/nest) app ESM bundles to make them work RHRN  
+> ⚠️ This is a temporary solution until Nestjs is fixed
 
 ## Problem
 1. `openapi` is not defined. https://github.com/nestjs/swagger/issues/1450
@@ -47,10 +48,10 @@ nestjs-esm-fix --target=**/* --cwd=target
 ```
 | Option               | Description                                                 | Default         |
 |----------------------|-------------------------------------------------------------|-----------------|
-| `--openapi-var`      | Inject openapi variable. Set `--no-openapi-var` to disable. | true            |
-| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.     | true            |
+| `--openapi-var`      | Inject openapi variable. Set `--no-openapi-var` to disable. | `true`          |
+| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.     | `true`          |
 | `--cwd`              | Current working dir                                         | `process.cwd()` |
-| `--target`           | Pattern to match files to fix.                              | '**/*'          |
+| `--target`           | Pattern to match files to fix.                              | `**/*`          |
 
 ### JS API
 ```js
