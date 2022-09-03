@@ -30,17 +30,31 @@ export class CspReportDto {
     }
 }
 ```
-3. esbuild-compiled ESM bundle cannot refer to `views/redoc.handlebars`
-```js
-const redocFilePath = path_1.default.join(__dirname, "..", "views", "redoc.handlebars");
-```
 
-4. NodeJS builtins are referenced via `require` API.
+3. NodeJS builtins are referenced via `require` API.
 ```js
 var require_async4 = __commonJS({
   "node_modules/resolve/lib/async.js"(exports, module2) {
     var fs2 = require("fs");
 ```
+
+4. esbuild-compiled ESM bundle cannot refer to `views/redoc.handlebars`
+```js
+const redocFilePath = path_1.default.join(__dirname, "..", "views", "redoc.handlebars");
+```
+
+5. `_OPENAPI_METADATA_FACTORY` class fields may be empty, so the swagger declaration cannot be properly rendered.
+```js
+var Meta = class {
+};
+// →
+var Meta = class {
+  static _OPENAPI_METADATA_FACTORY() {
+    return { appName: { required: false,  type: () =>  String }, appHost: { required: false,  type: () =>  String }, appVersion: { required: false,  type: () =>  String }, appNamespace: { required: false,  type: () =>  String }, appConfig: { required: false,  type: () =>  typeof (_a3 = typeof Record !== "undefined" && Record) === "function" ? _a3 : Object }, deviceInfo: { required: false,  type: () =>  typeof (_b3 = typeof Record !== "undefined" && Record) === "function" ? _b3 : Object }, userAgent: { required: false,  type: () =>  String }, envProfile: { required: false,  enum:  typeof (_c = typeof import_substrate2.EnvironmentProfile !== "undefined" && import_substrate2.EnvironmentProfile) === "function" ? _c : Object } }
+  }
+};
+```
+
 
 ## Solution
 Old good monkey patching.
@@ -57,23 +71,24 @@ nestjs-esm-fix target/**/*.js
 nestjs-esm-fix --target=target/**/*.js
 nestjs-esm-fix --target=**/* --cwd=target
 ```
-| Option               | Description                                                | Default         |
-|----------------------|------------------------------------------------------------|-----------------|
-| `--openapi-var`      | Inject openapi variable. Set `--no-openapi-var` to disable. | `true`          |
-| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.    | `true`          |
-| `--cwd`              | Current working dir                                        | `process.cwd()` |
-| `--target`           | Pattern to match files to fix.                             | `**/*`          |
-| `--importify`        | Replace `require` with `import` API for Nodejs builtins.   | `true`          |
-| `--redoc-template`   | Inject `redoc.hbs` templates                               | `true`          |
+| Option                   | Description                                                                                                            | Default         |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `--target`               | Pattern to match files to fix.                                                                                         | `**/*`          |
+| `--cwd`                  | Current working dir                                                                                                    | `process.cwd()` |
+| `--openapi-var`          | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
+| `--importify`            | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
+| `--require-main`         | Inject `main` field for `require` API polyfill                                                                         | `true`          |
+| `--redoc-template`       | Inject `redoc.hbs` templates                                                                                           | `true`          |
 
 ### JS API
 ```js
-import {fix} from 'nestjs-esm-fix'
+import { fix } from 'nestjs-esm-fix'
 await fix({
   cwd: '.',
   target: 'target/**/*.js',
   openapiVar: true,
-  openapiTypeRef: true,
+  importify: true,
+  requireMain: true
 })
 ```
 

@@ -3,7 +3,7 @@ import fse from 'fs-extra'
 
 export const defaults = {
   openapiVar: true,
-  openapiTypeRef: true,
+  importify: true,
 }
 
 export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
@@ -33,11 +33,15 @@ export const patchContents = async (contents, opts = {}) => {
   let _contents = contents
 
   if (opts.openapiVar) {
-    _contents = patchOpenapiRef(_contents)
+    _contents = patchOpenapiVariable(_contents)
   }
 
-  if (opts.openapiTypeRef) {
+  if (opts.importClasses || opt.importify) {
     _contents = patchClassRequire(_contents)
+  }
+
+  if (opts.importBuiltins || opt.importify) {
+    _contents = patchBuiltinsRequire(_contents)
   }
 
   if (opts.openapiMetadataFactory) {
@@ -100,7 +104,7 @@ const patchOpenapiMetadataFactory = (contents) => {
   })
 }
 
-const patchOpenapiRef = (contents) => {
+const patchOpenapiVariable = (contents) => {
   if (contents.includes(' openapi.') && !contents.includes('import openapi ')) {
     return `import openapi from "@nestjs/swagger";
 ${contents}`
@@ -130,4 +134,9 @@ const patchClassRequire = (contents) => {
   }
 
   return contents
+}
+
+// Adapted from ...
+const patchBuiltinsRequire = () => {
+
 }
