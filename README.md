@@ -7,7 +7,7 @@
 > Patch [Nestjs](https://github.com/nestjs/nest) app ESM bundles to make them work RHRN  
 > ⚠️ This is a temporary solution until Nestjs is fixed
 
-## Problem
+## Problems
 1. `openapi` is not defined. https://github.com/nestjs/swagger/issues/1450
 ```js
 __decorate([
@@ -30,6 +30,17 @@ export class CspReportDto {
     }
 }
 ```
+3. esbuild-compiled ESM bundle cannot refer to `views/redoc.handlebars`
+```js
+const redocFilePath = path_1.default.join(__dirname, "..", "views", "redoc.handlebars");
+```
+
+4. NodeJS builtins are referenced via `require` API.
+```js
+var require_async4 = __commonJS({
+  "node_modules/resolve/lib/async.js"(exports, module2) {
+    var fs2 = require("fs");
+```
 
 ## Solution
 Old good monkey patching.
@@ -46,12 +57,14 @@ nestjs-esm-fix target/**/*.js
 nestjs-esm-fix --target=target/**/*.js
 nestjs-esm-fix --target=**/* --cwd=target
 ```
-| Option               | Description                                                 | Default         |
-|----------------------|-------------------------------------------------------------|-----------------|
+| Option               | Description                                                | Default         |
+|----------------------|------------------------------------------------------------|-----------------|
 | `--openapi-var`      | Inject openapi variable. Set `--no-openapi-var` to disable. | `true`          |
-| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.     | `true`          |
-| `--cwd`              | Current working dir                                         | `process.cwd()` |
-| `--target`           | Pattern to match files to fix.                              | `**/*`          |
+| `--openapi-type-ref` | Replace `type: () => require` statements with `import`.    | `true`          |
+| `--cwd`              | Current working dir                                        | `process.cwd()` |
+| `--target`           | Pattern to match files to fix.                             | `**/*`          |
+| `--importify`        | Replace `require` with `import` API for Nodejs builtins.   | `true`          |
+| `--redoc-template`   | Inject `redoc.hbs` templates                               | `true`          |
 
 ### JS API
 ```js
