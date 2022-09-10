@@ -1,3 +1,8 @@
+## [1.2.4](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.3...v1.2.4) (2022-09-10)
+
+### Fixes & improvements
+* fix: avoid some false positive replacements ([64cdc8c](https://github.com/antongolub/nestjs-esm-fix/commit/64cdc8c484247c19f2d8d292aee9fa9d913cad15))
+
 ## [1.2.3](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.2...v1.2.3) (2022-09-10)
 
 ### Fixes & improvements
