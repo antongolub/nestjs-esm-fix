@@ -3,6 +3,7 @@ import fse from 'fs-extra'
 
 export const defaults = {
   openapiVar: true,
+  dirnameVar: true,
   importify: true,
 }
 
@@ -44,12 +45,16 @@ export const patchContents = async (contents, opts = {}) => {
     _contents = patchBuiltinsRequire(_contents)
   }
 
-  if (opts.dirnameVar || opts.importify) {
+  if (opts.dirnameVar) {
     _contents = patchDirnameVar(_contents)
   }
 
   if (opts.openapiMetadataFactory) {
     _contents = patchOpenapiMetadataFactory(_contents)
+  }
+
+  if (opts.requireMain) {
+    _contents = patchRequireMain(_contents)
   }
 
   return _contents
@@ -69,9 +74,11 @@ const patchOpenapiMetadataFactory = (contents) => {
 
   const metadata = decorators.reduce((m, block) => {
     const lines = block.split('\n')
-    const [, className, fieldName] = lines.pop().match(/(\w+)\.prototype, "(\w+)"/)
+    const [, className, fieldName] = lines
+      .pop()
+      .match(/(\w+)\.prototype, "(\w+)"/)
     const entry = { className, fieldName }
-    lines.forEach(l => {
+    lines.forEach((l) => {
       if (l.includes('__metadata("design:type')) {
         entry.type = l.slice(0, -1).split('__metadata("design:type",')[1]
       }
@@ -91,8 +98,10 @@ const patchOpenapiMetadataFactory = (contents) => {
     return m
   }, {})
 
-  const declareField = ({fieldName, type, isOptional, isEnum}) =>
-    `${fieldName}: { ${isOptional ? 'required: false, ' : ''} ${isEnum ? 'enum:' : 'type: () =>'} ${type} }`
+  const declareField = ({ fieldName, type, isOptional, isEnum }) =>
+    `${fieldName}: { ${isOptional ? 'required: false, ' : ''} ${
+      isEnum ? 'enum:' : 'type: () =>'
+    } ${type} }`
 
   return contents.replaceAll(/var (\w+) = class \{\n};/g, ($0, $1) => {
     const entry = metadata[$1]
@@ -147,12 +156,13 @@ ${contents}`
 
 // Adapted from https://github.com/evanw/esbuild/issues/1921#issuecomment-1010490128
 const patchBuiltinsRequire = (contents) => {
-  const regexp = /\b__require\("(_http_agent|_http_client|_http_common|_http_incoming|_http_outgoing|_http_server|_stream_duplex|_stream_passthrough|_stream_readable|_stream_transform|_stream_wrap|_stream_writable|_tls_common|_tls_wrap|assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|wasi|worker_threads|zlib)"\)/gm
+  const regexp =
+    /\b__require\("(_http_agent|_http_client|_http_common|_http_incoming|_http_outgoing|_http_server|_stream_duplex|_stream_passthrough|_stream_readable|_stream_transform|_stream_wrap|_stream_writable|_tls_common|_tls_wrap|assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|wasi|worker_threads|zlib)"\)/gm
   const modules = new Map()
   let imports = ''
 
-  const _contents = contents.replace(regexp, function(req, mod) {
-    const id = "__import_" + mod.toUpperCase()
+  const _contents = contents.replace(regexp, function (req, mod) {
+    const id = '__import_' + mod.toUpperCase()
     if (!modules.has(mod)) {
       imports += `import ${id} from '${mod}'\n`
     }
@@ -162,3 +172,13 @@ const patchBuiltinsRequire = (contents) => {
 
   return imports + _contents
 }
+
+const patchRequireMain = (contents) =>
+  contents.replace(
+    /var requireFunction =.+/,
+    (decl) => `${decl}
+requireFunction.main = {
+  filename: __filename
+};
+`,
+  )

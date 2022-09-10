@@ -64,7 +64,7 @@ test('fix() returns contents as is if no occurrences found', async () => {
   const after = `foo`
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
-  await fix({ cwd: temp, target: '**/*', importify: false })
+  await fix({ cwd: temp, target: '**/*', dirnameVar: false })
   const result = await fse.readFile(path.join(temp, 'index.js'), {
     encoding: 'utf8',
   })
@@ -162,7 +162,20 @@ var require_streamable_file = __commonJS({
   assert.equal(output, expected)
 })
 
-test('patchContents() injects `require.main` polyfill', async () => {})
+test('patchContents() injects `require.main` polyfill', async () => {
+  const input = `var requireFunction = "function" === typeof __webpack_require__ || "function" === typeof __non_webpack_require__ ? __non_webpack_require__ : __require;
+    var isInstalledWithPNPM = /* @__PURE__ */ __name(function(resolved) {`
+  const expected = `var requireFunction = "function" === typeof __webpack_require__ || "function" === typeof __non_webpack_require__ ? __non_webpack_require__ : __require;
+requireFunction.main = {
+  filename: __filename
+};
+
+    var isInstalledWithPNPM = /* @__PURE__ */ __name(function(resolved) {`
+
+  const output = await patchContents(input, { requireMain: true })
+  assert.equal(output, expected)
+})
+
 test('patchContents() restores redoc.handlebars template path', async () => {})
 
 test.run()

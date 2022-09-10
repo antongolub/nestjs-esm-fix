@@ -15,9 +15,13 @@ test('CLI patches contents by required opts', async () => {
   const before = `
  require("./csp.dto.js").CspReport
  openapi.ApiResponse({ status: 200, type: String })`
-  const after = `import openapi from "@nestjs/swagger";
+  const after = `import { fileURLToPath } from 'node:url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = __import_PATH.dirname(__filename)
+import { CspReport as __CspReport } from './csp.dto.js';
+import openapi from "@nestjs/swagger";
 
- require("./csp.dto.js").CspReport
+ __CspReport
  openapi.ApiResponse({ status: 200, type: String })`
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
