@@ -22,7 +22,7 @@ export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
 
 export const patch = async (file, opts) => {
   const contents = await fse.readFile(file, { encoding: 'utf8' })
-  const _contents = patchContents(contents, opts)
+  const _contents = await patchContents(contents, opts)
 
   if (_contents !== contents) {
     await fse.writeFile(file, _contents)
@@ -36,12 +36,16 @@ export const patchContents = async (contents, opts = {}) => {
     _contents = patchOpenapiVariable(_contents)
   }
 
-  if (opts.importClasses || opt.importify) {
+  if (opts.importClasses || opts.importify) {
     _contents = patchClassRequire(_contents)
   }
 
-  if (opts.importBuiltins || opt.importify) {
+  if (opts.importBuiltins || opts.importify) {
     _contents = patchBuiltinsRequire(_contents)
+  }
+
+  if (opts.dirnameVar || opts.importify) {
+    _contents = patchDirnameVar(_contents)
   }
 
   if (opts.openapiMetadataFactory) {
@@ -136,7 +140,25 @@ const patchClassRequire = (contents) => {
   return contents
 }
 
-// Adapted from ...
-const patchBuiltinsRequire = () => {
+const patchDirnameVar = (contents) => `import { fileURLToPath } from 'node:url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = __import_PATH.dirname(__filename)
+${contents}`
 
+// Adapted from https://github.com/evanw/esbuild/issues/1921#issuecomment-1010490128
+const patchBuiltinsRequire = (contents) => {
+  const regexp = /\b__require\("(_http_agent|_http_client|_http_common|_http_incoming|_http_outgoing|_http_server|_stream_duplex|_stream_passthrough|_stream_readable|_stream_transform|_stream_wrap|_stream_writable|_tls_common|_tls_wrap|assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|wasi|worker_threads|zlib)"\)/gm
+  const modules = new Map()
+  let imports = ''
+
+  const _contents = contents.replace(regexp, function(req, mod) {
+    const id = "__import_" + mod.toUpperCase()
+    if (!modules.has(mod)) {
+      imports += `import ${id} from '${mod}'\n`
+    }
+    modules.set(mod, id)
+    return id
+  })
+
+  return imports + _contents
 }

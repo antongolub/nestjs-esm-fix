@@ -7,6 +7,9 @@
 > Patch [Nestjs](https://github.com/nestjs/nest) app ESM bundles to make them work RHRN  
 > ⚠️ This is a temporary solution until Nestjs is fixed
 
+## Stack
+Nestjs 9.x + esbuild
+
 ## Problems
 1. `openapi` is not defined. https://github.com/nestjs/swagger/issues/1450
 ```js

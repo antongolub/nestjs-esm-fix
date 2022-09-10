@@ -26,7 +26,10 @@ __decorate([
   __metadata("design:returntype", Promise)
 ], EventUnsafeController.prototype, "logEventBatch", null);
 `
-  const after = `import { CspReport as __CspReport } from './csp.dto.js';
+  const after = `import { fileURLToPath } from 'node:url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = __import_PATH.dirname(__filename)
+import { CspReport as __CspReport } from './csp.dto.js';
 import openapi from "@nestjs/swagger";
 
 export class CspReportDto {
@@ -61,7 +64,7 @@ test('fix() returns contents as is if no occurrences found', async () => {
   const after = `foo`
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
-  await fix({ cwd: temp, target: '**/*' })
+  await fix({ cwd: temp, target: '**/*', importify: false })
   const result = await fse.readFile(path.join(temp, 'index.js'), {
     encoding: 'utf8',
   })
@@ -78,7 +81,7 @@ test('fix() asserts arguments', async () => {
   }
 })
 
-test.only('patchContents() restores openapi metadata', async () => {
+test('patchContents() restores openapi metadata', async () => {
   const input = `var Meta = class {
 };
 __name(Meta, "Meta");
@@ -131,8 +134,32 @@ __decorate([
 };`
 
   const output = await patchContents(input, { openapiMetadataFactory: true })
-
   assert.ok(output.startsWith(expected))
+})
+
+test('patchContents() replaces builtins require() with import API', async () => {
+  const input = `// node_modules/@nestjs/common/file-stream/streamable-file.js
+var require_streamable_file = __commonJS({
+  "node_modules/@nestjs/common/file-stream/streamable-file.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.StreamableFile = void 0;
+    var stream_1 = __require("stream");
+    var util_1 = __require("util");
+`
+  const expected = `import __import_STREAM from 'stream'
+import __import_UTIL from 'util'
+// node_modules/@nestjs/common/file-stream/streamable-file.js
+var require_streamable_file = __commonJS({
+  "node_modules/@nestjs/common/file-stream/streamable-file.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.StreamableFile = void 0;
+    var stream_1 = __import_STREAM;
+    var util_1 = __import_UTIL;
+`
+  const output = await patchContents(input, { importBuiltins: true })
+  assert.equal(output, expected)
 })
 
 test('patchContents() injects `require.main` polyfill', async () => {})
