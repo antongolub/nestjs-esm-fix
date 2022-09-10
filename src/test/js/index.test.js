@@ -51,9 +51,11 @@ __decorate([
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
   await fix({ cwd: temp, target: '**/*' })
-  const result = (await fse.readFile(path.join(temp, 'index.js'), {
-    encoding: 'utf8',
-  })).replaceAll(/CspReport__\w+/g, 'CspReport__')
+  const result = (
+    await fse.readFile(path.join(temp, 'index.js'), {
+      encoding: 'utf8',
+    })
+  ).replaceAll(/CspReport__\w+/g, 'CspReport__')
 
   assert.fixture(result, after)
 })

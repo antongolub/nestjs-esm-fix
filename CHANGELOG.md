@@ -1,3 +1,8 @@
+## [1.2.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.0...v1.2.1) (2022-09-10)
+
+### Fixes & improvements
+* fix: avoid imported names clashes ([e09e5ab](https://github.com/antongolub/nestjs-esm-fix/commit/e09e5ab834ad375f4c35e77373d79fe23ed79aa7))
+
 ## [1.2.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.1.1...v1.2.0) (2022-09-10)
 
 ### Features
