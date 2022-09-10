@@ -1,3 +1,13 @@
+## [1.2.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.1.1...v1.2.0) (2022-09-10)
+
+### Features
+* feat: inject `require.main` polyfill ([ae2ea07](https://github.com/antongolub/nestjs-esm-fix/commit/ae2ea071ed76cc88c0242d3bc9b3600bcae12b31))
+* feat: replace `require` for builtins with import api ([85f74b1](https://github.com/antongolub/nestjs-esm-fix/commit/85f74b19d5377bac8c1f927374da9d6722875b15))
+* feat: restore _OPENAPI_METADATA_FACTORY if empty ([756017c](https://github.com/antongolub/nestjs-esm-fix/commit/756017c4f448fa08a06b1fd7fff210101b449451))
+
+### Fixes & improvements
+* refactor: use `importify` to patch all require statements ([fe8463e](https://github.com/antongolub/nestjs-esm-fix/commit/fe8463e8b156689ac03818244e0f81772ff7d482))
+
 ## [1.1.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.1.0...v1.1.1) (2022-08-18)
 
 ### Fixes & improvements
