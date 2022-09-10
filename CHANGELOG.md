@@ -1,3 +1,8 @@
+## [1.2.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.1...v1.2.2) (2022-09-10)
+
+### Fixes & improvements
+* fix: handle both ` ([](https://github.com/antongolub/nestjs-esm-fix/commit/1dea218))
+
 ## [1.2.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.0...v1.2.1) (2022-09-10)
 
 ### Fixes & improvements
