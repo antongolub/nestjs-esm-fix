@@ -29,12 +29,12 @@ __decorate([
   const after = `import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = __import_PATH.dirname(__filename)
-import { CspReport as __CspReport } from './csp.dto.js';
+import { CspReport as CspReport__ } from './csp.dto.js';
 import openapi from "@nestjs/swagger";
 
 export class CspReportDto {
   static _OPENAPI_METADATA_FACTORY() {
-    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => __CspReport } };
+    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => CspReport__ } };
   }
 }
 __decorate([
@@ -51,9 +51,9 @@ __decorate([
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
   await fix({ cwd: temp, target: '**/*' })
-  const result = await fse.readFile(path.join(temp, 'index.js'), {
+  const result = (await fse.readFile(path.join(temp, 'index.js'), {
     encoding: 'utf8',
-  })
+  })).replaceAll(/CspReport__\w+/g, 'CspReport__')
 
   assert.fixture(result, after)
 })

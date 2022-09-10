@@ -28,7 +28,7 @@ if (argv.help || argv.h) {
     
   Options:
     --openapi-var       Inject openapi variable. Defaults to true, set 'no-' prefix to disable.
-    --openapi-type-ref  Replace 'type: () => require' statements with 'import'. Defaults to true
+    --importify         Replace 'require' with 'import' API if possible. Defaults to true
     --cwd -C            Working directory. Defaults to process.cwd()
     --target            Pattern to match files to fix. Defaults to '**/*'
     --help -h           Show help
@@ -36,7 +36,7 @@ if (argv.help || argv.h) {
 
   Examples:
     nestjs-esm-fix target/es6
-    nestjs-esm-fix target/**/*.js --no-openapi-type-ref
+    nestjs-esm-fix target/**/*.js --no-importify
 `)
   process.exit(0)
 } else if (argv.v || argv.version) {

@@ -128,16 +128,20 @@ ${contents}`
 
 const patchClassRequire = (contents) => {
   const pattern = /require\("([^"]+)"\)\.(\w+)/gi
-  const aliases = []
+  const aliases = new Map()
   const _contents = contents.replaceAll(pattern, (_, $1, $2) => {
-    const alias = `__${$2}`
-    aliases.push({ source: $1, alias, ref: $2 })
-    return alias
+    const key = `${$1}#${$2}`
+    if (!aliases.has(key)) {
+      const alias = `${$2}__${Math.random().toString(36).slice(2)}`
+      aliases.set(key, { source: $1, alias, ref: $2 })
+    }
+
+    return aliases.get(key).alias
   })
 
-  if (aliases.length > 0) {
+  if (aliases.size > 0) {
     return (
-      aliases
+      [...aliases.values()]
         .map(
           ({ source, alias, ref }) =>
             `import { ${ref} as ${alias} } from '${source}';\n`,

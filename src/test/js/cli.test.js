@@ -13,26 +13,17 @@ process.exit = () => {}
 test('CLI patches contents by required opts', async () => {
   const temp = temporaryDirectory()
   const before = `
- require("./csp.dto.js").CspReport
  openapi.ApiResponse({ status: 200, type: String })`
   const after = `import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = __import_PATH.dirname(__filename)
-import { CspReport as __CspReport } from './csp.dto.js';
 import openapi from "@nestjs/swagger";
 
- __CspReport
  openapi.ApiResponse({ status: 200, type: String })`
 
   await fse.outputFile(path.join(temp, 'index.js'), before)
 
-  process.argv = [
-    ...argv.slice(0, 2),
-    '.',
-    '--cwd',
-    temp,
-    '--no-openapi-type-ref=true',
-  ]
+  process.argv = [...argv.slice(0, 2), '.', '--cwd', temp, '--no-importify']
   await import('../../main/js/cli.js#custom')
   const result = await fse.readFile(path.join(temp, 'index.js'), {
     encoding: 'utf8',
