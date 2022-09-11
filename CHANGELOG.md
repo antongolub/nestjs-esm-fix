@@ -1,3 +1,8 @@
+## [1.4.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.0...v1.4.1) (2022-09-11)
+
+### Fixes & improvements
+* fix: reduce false positives matches ([82e4033](https://github.com/antongolub/nestjs-esm-fix/commit/82e403343040cb40e432423ff29f8e7c70dc989d))
+
 ## [1.4.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.2...v1.4.0) (2022-09-11)
 
 ### Features
