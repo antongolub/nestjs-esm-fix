@@ -1,3 +1,8 @@
+## [1.3.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.4...v1.3.0) (2022-09-11)
+
+### Features
+* feat: add redoc tpl inject ([940eaa5](https://github.com/antongolub/nestjs-esm-fix/commit/940eaa5c13d01fe290f693dcfb5c8b561136a29d))
+
 ## [1.2.4](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.3...v1.2.4) (2022-09-10)
 
 ### Fixes & improvements
