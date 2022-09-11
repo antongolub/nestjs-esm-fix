@@ -1,3 +1,8 @@
+## [1.3.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.0...v1.3.1) (2022-09-11)
+
+### Fixes & improvements
+* fix: strengthen class require pattern ([51716d1](https://github.com/antongolub/nestjs-esm-fix/commit/51716d14bcc3503a4741bfb42ee00dce03cabd87))
+
 ## [1.3.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.2.4...v1.3.0) (2022-09-11)
 
 ### Features
