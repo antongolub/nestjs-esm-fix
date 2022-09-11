@@ -70,7 +70,7 @@ export const patchContents = async (contents, opts = {}) => {
 }
 
 const patchOpenapiMetadataFactory = (contents) => {
-  const decoratorsRe = /__decorate([^;]+);/g
+  const decoratorsRe = /__decorate([^;]+\.prototype[^;]+);/g
   const decorators = []
 
   let m
