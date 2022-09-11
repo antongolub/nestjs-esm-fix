@@ -1,3 +1,8 @@
+## [1.4.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.1...v1.4.2) (2022-09-11)
+
+### Fixes & improvements
+* fix: fix metadata for array types ([33159d5](https://github.com/antongolub/nestjs-esm-fix/commit/33159d52633a6552e5a54890b0a5ad9e36e2bfa5))
+
 ## [1.4.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.0...v1.4.1) (2022-09-11)
 
 ### Fixes & improvements
