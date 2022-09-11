@@ -19,7 +19,11 @@ export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
   }
 
   const opts = { ...defaults, ..._opts }
-  const pattern = target.includes('*') ? target : extname(target) ? target : `${target}/**/*`
+  const pattern = target.includes('*')
+    ? target
+    : extname(target)
+    ? target
+    : `${target}/**/*`
   const files = await globby(pattern, { onlyFiles: true, absolute: true, cwd })
 
   await Promise.all(files.map((file) => patch(file, opts)))

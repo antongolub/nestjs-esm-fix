@@ -1,3 +1,11 @@
+## [1.4.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.2...v1.4.0) (2022-09-11)
+
+### Features
+* feat: let target be a bundle file ([ad0f5a2](https://github.com/antongolub/nestjs-esm-fix/commit/ad0f5a2a2f695f9d6aac0cbe339d9dc21288121b))
+
+### Fixes & improvements
+* fix: strengthen decorator pattern ([76b5f58](https://github.com/antongolub/nestjs-esm-fix/commit/76b5f58b09cbfd67b2845fca5cfed39a8d4d284a))
+
 ## [1.3.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.1...v1.3.2) (2022-09-11)
 
 ### Fixes & improvements
