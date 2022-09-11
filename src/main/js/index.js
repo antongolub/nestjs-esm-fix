@@ -2,6 +2,7 @@ import { globby } from 'globby'
 import fse from 'fs-extra'
 import { resolve } from 'import-meta-resolve'
 import { fileURLToPath } from 'node:url'
+import { extname } from 'node:path'
 
 export const defaults = {
   openapiMeta: true,
@@ -18,7 +19,7 @@ export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
   }
 
   const opts = { ...defaults, ..._opts }
-  const pattern = target.includes('*') ? target : `${target}/**/*`
+  const pattern = target.includes('*') ? target : extname(target) ? target : `${target}/**/*`
   const files = await globby(pattern, { onlyFiles: true, absolute: true, cwd })
 
   await Promise.all(files.map((file) => patch(file, opts)))
