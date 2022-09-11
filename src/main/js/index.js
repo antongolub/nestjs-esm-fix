@@ -135,7 +135,7 @@ ${contents}`
 }
 
 const patchClassRequire = (contents) => {
-  const pattern = /\b(?:__)?require\("([^"]+)"\)\.(\w+)/gi
+  const pattern = /\srequire\("([^"]+)"\)\.(\w+)/gi
   const aliases = new Map()
   const _contents = contents.replaceAll(pattern, (_, $1, $2) => {
     const key = `${$1}#${$2}`
@@ -144,7 +144,7 @@ const patchClassRequire = (contents) => {
       aliases.set(key, { source: $1, alias, ref: $2 })
     }
 
-    return aliases.get(key).alias
+    return ' ' + aliases.get(key).alias
   })
 
   if (aliases.size > 0) {
