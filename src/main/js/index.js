@@ -93,19 +93,28 @@ const patchOpenapiMetadataFactory = (contents) => {
       .match(/(\w+)\.prototype, "([^" ]+)"/)
     const entry = { className, fieldName }
     lines.forEach((l) => {
-      if (l.includes('__metadata("design:type')) {
-        entry.type = l.slice(0, -1).split('__metadata("design:type",')[1]
-      }
-
-      if (l.includes('.Type)(() => ')) {
-      }
-
       if (l.includes('IsOptional')) {
         entry.isOptional = true
       }
 
       if (l.includes('IsEnum')) {
         entry.isEnum = true
+      }
+
+      if (l.includes('IsArray')) {
+        entry.isArray = true
+      }
+
+      if (l.includes(' Type(() => ') || l.includes('.Type)(() => ')) {
+        entry.type = l.slice(0, -2).split(' ').pop()
+      }
+
+      if (l.includes('__metadata("design:type')) {
+        const _type = l.slice(0, -1).split('__metadata("design:type",')[1]
+        entry.type =
+          entry.type && (_type === 'Array' || entry.isArray)
+            ? `[${entry.type}]`
+            : _type
       }
     })
 
@@ -116,22 +125,27 @@ const patchOpenapiMetadataFactory = (contents) => {
   }, {})
 
   const declareField = ({ fieldName, type, isOptional, isEnum }) =>
-    `'${fieldName}': { ${isOptional ? 'required: false, ' : ''} ${
+    `'${fieldName}': { ${isOptional ? 'required: false, ' : ''}${
       isEnum ? 'enum:' : 'type: () =>'
     } ${type} }`
 
-  return contents.replaceAll(/var (\w+) = class \{\n};/g, ($0, $1) => {
-    const entry = metadata[$1]
-    if (!entry) {
-      return $1
-    }
+  return contents.replaceAll(
+    /(var (\w+) = class|export class (\w+)) \{\n};?/g,
+    ($0, $1, $2, $3) => {
+      const name = $2 || $3
+      const entry = metadata[name]
 
-    return `var ${$1} = class {
+      if (!entry) {
+        return $1
+      }
+
+      return `${$1} {
     static _OPENAPI_METADATA_FACTORY() {
         return { ${entry.map(declareField).join(', ')} }
     }
 };`
-  })
+    },
+  )
 }
 
 const patchOpenapiVariable = (contents) => {

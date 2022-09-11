@@ -131,7 +131,7 @@ __decorate([
 
   const expected = `var Meta = class {
     static _OPENAPI_METADATA_FACTORY() {
-        return { 'appName': { required: false,  type: () =>  String }, 'appHost': { required: false,  type: () =>  String }, 'appVersion': { required: false,  type: () =>  String }, 'appNamespace': { required: false,  type: () =>  String }, 'appConfig': { required: false,  type: () =>  typeof (_a3 = typeof Record !== "undefined" && Record) === "function" ? _a3 : Object }, 'deviceInfo': { required: false,  type: () =>  typeof (_b3 = typeof Record !== "undefined" && Record) === "function" ? _b3 : Object }, 'userAgent': { required: false,  type: () =>  String }, 'envProfile': { required: false,  enum:  typeof (_c = typeof import_substrate2.EnvironmentProfile !== "undefined" && import_substrate2.EnvironmentProfile) === "function" ? _c : Object } }
+        return { 'appName': { required: false, type: () =>  String }, 'appHost': { required: false, type: () =>  String }, 'appVersion': { required: false, type: () =>  String }, 'appNamespace': { required: false, type: () =>  String }, 'appConfig': { required: false, type: () =>  typeof (_a3 = typeof Record !== "undefined" && Record) === "function" ? _a3 : Object }, 'deviceInfo': { required: false, type: () =>  typeof (_b3 = typeof Record !== "undefined" && Record) === "function" ? _b3 : Object }, 'userAgent': { required: false, type: () =>  String }, 'envProfile': { required: false, enum:  typeof (_c = typeof import_substrate2.EnvironmentProfile !== "undefined" && import_substrate2.EnvironmentProfile) === "function" ? _c : Object } }
     }
 };`
 
@@ -139,20 +139,23 @@ __decorate([
   assert.ok(output.startsWith(expected))
 })
 
-test('patchContents() restores openapi metadata for complex types', async () => {
-  const input = `
-  export class CreateEventBatchDto {
-    static _OPENAPI_METADATA_FACTORY() {
-        return { events: { required: true, type: () => [require("./event.dto.js").CreateEventDto] } };
-    }
+test('patchContents() restores openapi metadata for Array types', async () => {
+  const input = `export class CreateEventBatchDto {
 }
 __decorate([
-    IsArray(),
-    ValidateNested({ each: true }),
-    Type(() => CreateEventDto),
-    __metadata("design:type", Array)
+  IsArray(),
+  ValidateNested({ each: true }),
+  Type(() => CreateEventDto),
+  __metadata("design:type", Array)
 ], CreateEventBatchDto.prototype, "events", void 0);
 `
+  const expected = `export class CreateEventBatchDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { 'events': { type: () => [CreateEventDto] } }
+    }
+};`
+  const output = await patchContents(input, { openapiMeta: true })
+  assert.ok(output.startsWith(expected))
 })
 
 test('patchContents() replaces builtins require() with import API', async () => {
