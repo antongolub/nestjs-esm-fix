@@ -178,6 +178,12 @@ requireFunction.main = {
   assert.equal(output, expected)
 })
 
-test('patchContents() restores redoc.handlebars template path', async () => {})
+test('patchContents() restores redoc.handlebars template path', async () => {
+  const input = 'const redocHTML = yield hbs.render(redocFilePath, renderData);'
+  const expected = `const redocHTML = yield hbs._renderTemplate(\`<!DOCTYPE html>`
+
+  const output = await patchContents(input, { redocTpl: true })
+  assert.ok(output.startsWith(expected))
+})
 
 test.run()

@@ -74,15 +74,15 @@ nestjs-esm-fix target/**/*.js
 nestjs-esm-fix --target=target/**/*.js
 nestjs-esm-fix --target=**/* --cwd=target
 ```
-| Option             | Description                                                                                                            | Default         |
-|--------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `--target`         | Pattern to match files to fix.                                                                                         | `**/*`          |
-| `--cwd`            | Current working dir                                                                                                    | `process.cwd()` |
-| `--openapi-var`    | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
-| `--dirname-var`    | Inject `__dirname` and `__filename` polyfills.                                                                         | `true`          |
-| `--importify`      | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
-| `--require-main`   | Inject `main` field for `require` API polyfill                                                                         | `true`          |
-| `--redoc-template` | Inject `redoc.hbs` templates                                                                                           | `true`          |
+| Option           | Description                                                                                                            | Default         |
+|------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `--target`       | Pattern to match files to fix.                                                                                         | `**/*`          |
+| `--cwd`          | Current working dir                                                                                                    | `process.cwd()` |
+| `--openapi-var`  | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
+| `--dirname-var`  | Inject `__dirname` and `__filename` polyfills.                                                                         | `true`          |
+| `--importify`    | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
+| `--require-main` | Inject `main` field for `require` API polyfill                                                                         | `true`          |
+| `--redoc-tpl`    | Inject `redoc.hbs` templates                                                                                           | `true`          |
 
 ### JS API
 ```js

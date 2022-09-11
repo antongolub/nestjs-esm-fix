@@ -1,10 +1,14 @@
 import { globby } from 'globby'
 import fse from 'fs-extra'
+import { resolve } from 'import-meta-resolve'
+import { fileURLToPath } from 'node:url'
 
 export const defaults = {
   openapiVar: true,
   dirnameVar: true,
   importify: true,
+  requireMain: true,
+  redocTpl: true,
 }
 
 export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
@@ -55,6 +59,10 @@ export const patchContents = async (contents, opts = {}) => {
 
   if (opts.requireMain) {
     _contents = patchRequireMain(_contents)
+  }
+
+  if (opts.redocTpl) {
+    _contents = await patchRedocTemplate(_contents)
   }
 
   return _contents
@@ -161,7 +169,7 @@ ${contents}`
 // Adapted from https://github.com/evanw/esbuild/issues/1921#issuecomment-1010490128
 const patchBuiltinsRequire = (contents) => {
   const regexp =
-    /\b(?:__)?require\("(_http_agent|_http_client|_http_common|_http_incoming|_http_outgoing|_http_server|_stream_duplex|_stream_passthrough|_stream_readable|_stream_transform|_stream_wrap|_stream_writable|_tls_common|_tls_wrap|assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|wasi|worker_threads|zlib)"\)/gm
+    /\b__require\("(_http_agent|_http_client|_http_common|_http_incoming|_http_outgoing|_http_server|_stream_duplex|_stream_passthrough|_stream_readable|_stream_transform|_stream_wrap|_stream_writable|_tls_common|_tls_wrap|assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|diagnostics_channel|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|wasi|worker_threads|zlib)"\)/gm
   const modules = new Map()
   let imports = ''
 
@@ -186,3 +194,15 @@ requireFunction.main = {
 };
 `,
   )
+
+const patchRedocTemplate = async (contents) => {
+  const tplPath = fileURLToPath(
+    await resolve('nestjs-redoc/views/redoc.handlebars', import.meta.url),
+  )
+  const tpl = await fse.readFile(tplPath, 'utf8')
+
+  return contents.replace(
+    'const redocHTML = yield hbs.render(redocFilePath, renderData);',
+    `const redocHTML = yield hbs._renderTemplate(\`${tpl}\`, renderData);`,
+  )
+}
