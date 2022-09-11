@@ -75,7 +75,7 @@ export const patchContents = async (contents, opts = {}) => {
 }
 
 const patchOpenapiMetadataFactory = (contents) => {
-  const decoratorsRe = /__decorate([^;]+\.prototype[^;]+);/g
+  const decoratorsRe = /\n__decorate([^;]+\.prototype[^;]+);/g
   const decorators = []
 
   let m
@@ -90,11 +90,14 @@ const patchOpenapiMetadataFactory = (contents) => {
     const lines = block.split('\n')
     const [, className, fieldName] = lines
       .pop()
-      .match(/(\w+)\.prototype, "(\w+)"/)
+      .match(/(\w+)\.prototype, "([^" ]+)"/)
     const entry = { className, fieldName }
     lines.forEach((l) => {
       if (l.includes('__metadata("design:type')) {
         entry.type = l.slice(0, -1).split('__metadata("design:type",')[1]
+      }
+
+      if (l.includes('.Type)(() => ')) {
       }
 
       if (l.includes('IsOptional')) {
@@ -113,7 +116,7 @@ const patchOpenapiMetadataFactory = (contents) => {
   }, {})
 
   const declareField = ({ fieldName, type, isOptional, isEnum }) =>
-    `${fieldName}: { ${isOptional ? 'required: false, ' : ''} ${
+    `'${fieldName}': { ${isOptional ? 'required: false, ' : ''} ${
       isEnum ? 'enum:' : 'type: () =>'
     } ${type} }`
 

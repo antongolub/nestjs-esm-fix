@@ -8,29 +8,34 @@
 > ⚠️ This is a temporary solution until Nestjs is fixed
 
 ## Stack
-Nestjs 9.x + esbuild
+* [Nestjs 9.x](https://github.com/nestjs/nest)
+* [esbuild 0.15.x](https://github.com/evanw/esbuild)
 
 ## Problems
+> https://github.com/nestjs/nest-cli/issues/1157
+> https://github.com/evanw/esbuild/pull/509
+> https://github.com/evanw/esbuild/issues/566
+
 1. `openapi` is not defined. https://github.com/nestjs/swagger/issues/1450
 ```js
 __decorate([
-    Post('event-unsafe-batch'),
-    HttpCode(200),
-    openapi.ApiResponse({ status: 200, type: String }),
-    __param(0, Body()),
-    __param(1, Req()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
+  Post('event-unsafe-batch'),
+  HttpCode(200),
+  openapi.ApiResponse({ status: 200, type: String }),
+  __param(0, Body()),
+  __param(1, Req()),
+  __metadata("design:type", Function),
+  __metadata("design:paramtypes", [Object, Object]),
+  __metadata("design:returntype", Promise)
 ], EventUnsafeController.prototype, "logEventBatch", null);
 ```
 
 2. openapi / class-validator DTOs are referenced by `require` API. https://github.com/microsoft/TypeScript/issues/43329
 ```js
 export class CspReportDto {
-    static _OPENAPI_METADATA_FACTORY() {
-        return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => require("./csp.dto.js").CspReport } };
-    }
+  static _OPENAPI_METADATA_FACTORY() {
+    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => require("./csp.dto.js").CspReport } };
+  }
 }
 ```
 
