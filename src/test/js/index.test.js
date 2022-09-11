@@ -135,7 +135,7 @@ __decorate([
     }
 };`
 
-  const output = await patchContents(input, { openapiMetadataFactory: true })
+  const output = await patchContents(input, { openapiMeta: true })
   assert.ok(output.startsWith(expected))
 })
 
@@ -180,7 +180,7 @@ requireFunction.main = {
 
 test('patchContents() restores redoc.handlebars template path', async () => {
   const input = 'const redocHTML = yield hbs.render(redocFilePath, renderData);'
-  const expected = `const redocHTML = yield hbs._renderTemplate(\`<!DOCTYPE html>`
+  const expected = `const redocHTML = yield hbs._renderTemplate(hbs._compileTemplate(\`<!DOCTYPE html>`
 
   const output = await patchContents(input, { redocTpl: true })
   assert.ok(output.startsWith(expected))
