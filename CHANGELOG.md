@@ -1,3 +1,8 @@
+## [1.3.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.1...v1.3.2) (2022-09-11)
+
+### Fixes & improvements
+* fix: enable `openapi.meta` flag by default ([7760ee4](https://github.com/antongolub/nestjs-esm-fix/commit/7760ee474633a4bb058f2f94daee8ef042979176))
+
 ## [1.3.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.3.0...v1.3.1) (2022-09-11)
 
 ### Fixes & improvements
