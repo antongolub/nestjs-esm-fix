@@ -78,6 +78,7 @@ nestjs-esm-fix --target=**/* --cwd=target
 |------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
 | `--target`       | Pattern to match files to fix.                                                                                         | `**/*`          |
 | `--cwd`          | Current working dir                                                                                                    | `process.cwd()` |
+| `--openapi-meta` | Restore `static OPENAPI_METADATA_FACTORY` if missing.                                                                  | `true`          |
 | `--openapi-var`  | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
 | `--dirname-var`  | Inject `__dirname` and `__filename` polyfills.                                                                         | `true`          |
 | `--importify`    | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
@@ -91,6 +92,7 @@ await fix({
   cwd: '.',
   target: 'target/**/*.js',
   openapiVar: true,
+  openapiMeta: true,
   dirnameVar: true,
   importify: true,
   requireMain: true

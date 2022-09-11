@@ -4,6 +4,7 @@ import { resolve } from 'import-meta-resolve'
 import { fileURLToPath } from 'node:url'
 
 export const defaults = {
+  openapiMeta: true,
   openapiVar: true,
   dirnameVar: true,
   importify: true,
@@ -53,7 +54,7 @@ export const patchContents = async (contents, opts = {}) => {
     _contents = patchDirnameVar(_contents)
   }
 
-  if (opts.openapiMetadataFactory) {
+  if (opts.openapiMeta) {
     _contents = patchOpenapiMetadataFactory(_contents)
   }
 
@@ -203,6 +204,6 @@ const patchRedocTemplate = async (contents) => {
 
   return contents.replace(
     'const redocHTML = yield hbs.render(redocFilePath, renderData);',
-    `const redocHTML = yield hbs._renderTemplate(\`${tpl}\`, renderData);`,
+    `const redocHTML = yield hbs._renderTemplate(hbs._compileTemplate(\`${tpl}\`), renderData, { helpers: { toJSON(object) { return JSON.stringify(object); }}});`,
   )
 }
