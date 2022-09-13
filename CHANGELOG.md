@@ -1,3 +1,8 @@
+## [1.5.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.2...v1.5.0) (2022-09-13)
+
+### Features
+* feat: simplify ([](https://github.com/antongolub/nestjs-esm-fix/commit/ed69aa9))
+
 ## [1.4.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.1...v1.4.2) (2022-09-11)
 
 ### Fixes & improvements
