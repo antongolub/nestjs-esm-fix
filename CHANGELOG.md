@@ -1,3 +1,8 @@
+## [1.5.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.0...v1.5.1) (2022-09-13)
+
+### Fixes & improvements
+* fix: strengthen design:type patch pattern ([048a2aa](https://github.com/antongolub/nestjs-esm-fix/commit/048a2aa798fe98ec91c7100330dacabd601d11fe))
+
 ## [1.5.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.4.2...v1.5.0) (2022-09-13)
 
 ### Features
