@@ -163,16 +163,16 @@ ${contents}`
 }
 
 const patchClassRequire = (contents) => {
-  const pattern = /\srequire\("([^"]+)"\)\.(\w+)/gi
+  const pattern = /(\s|\[)require\("([^"]+)"\)\.(\w+)/gi
   const aliases = new Map()
-  const _contents = contents.replaceAll(pattern, (_, $1, $2) => {
+  const _contents = contents.replaceAll(pattern, (_, $0, $1, $2) => {
     const key = `${$1}#${$2}`
     if (!aliases.has(key)) {
       const alias = `${$2}__${Math.random().toString(36).slice(2)}`
       aliases.set(key, { source: $1, alias, ref: $2 })
     }
 
-    return ' ' + aliases.get(key).alias
+    return $0 + aliases.get(key).alias
   })
 
   if (aliases.size > 0) {
@@ -190,8 +190,9 @@ const patchClassRequire = (contents) => {
 }
 
 const patchDirnameVar = (contents) => `import { fileURLToPath } from 'node:url'
+import { dirname as __pathDirname} from 'node:path'
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = __import_PATH.dirname(__filename)
+const __dirname = __pathDirname(__filename)
 ${contents}`
 
 // Adapted from https://github.com/evanw/esbuild/issues/1921#issuecomment-1010490128

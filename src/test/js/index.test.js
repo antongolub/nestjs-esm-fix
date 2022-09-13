@@ -12,7 +12,7 @@ test('fix() patches contents by required opts', async () => {
   const before = `
 export class CspReportDto {
   static _OPENAPI_METADATA_FACTORY() {
-    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => require("./csp.dto.js").CspReport } };
+    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => require("./csp.dto.js").CspReport, 'csp-reports': { required: true, type: () => [require("./csp.dto.js").CspReport] } };
   }
 }
 __decorate([
@@ -27,14 +27,15 @@ __decorate([
 ], EventUnsafeController.prototype, "logEventBatch", null);
 `
   const after = `import { fileURLToPath } from 'node:url'
+import { dirname as __pathDirname} from 'node:path'
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = __import_PATH.dirname(__filename)
+const __dirname = __pathDirname(__filename)
 import { CspReport as CspReport__ } from './csp.dto.js';
 import openapi from "@nestjs/swagger";
 
 export class CspReportDto {
   static _OPENAPI_METADATA_FACTORY() {
-    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => CspReport__ } };
+    return { timestamp: { required: false, type: () => Object }, 'csp-report': { required: true, type: () => CspReport__, 'csp-reports': { required: true, type: () => [CspReport__] } };
   }
 }
 __decorate([
@@ -205,7 +206,7 @@ test('patchContents() restores redoc.handlebars template path', async () => {
   assert.ok(output.startsWith(expected))
 })
 
-test.only('patchContents() simplifies complex openapi types', async () => {
+test('patchContents() simplifies complex openapi types', async () => {
   const input = `
   __metadata("design:type", typeof (_d = typeof Array !== "undefined" && Array) === "function" ? _d : Object)
   __metadata("design:type", typeof (_e = typeof import_substrate2.LogLevel !== "undefined" && import_substrate2.LogLevel) === "function" ? _e : Object)

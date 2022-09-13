@@ -15,8 +15,9 @@ test('CLI patches contents by required opts', async () => {
   const before = `
  openapi.ApiResponse({ status: 200, type: String })`
   const after = `import { fileURLToPath } from 'node:url'
+import { dirname as __pathDirname} from 'node:path'
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = __import_PATH.dirname(__filename)
+const __dirname = __pathDirname(__filename)
 import openapi from "@nestjs/swagger";
 
  openapi.ApiResponse({ status: 200, type: String })`
