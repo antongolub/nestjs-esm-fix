@@ -236,8 +236,7 @@ const patchRedocTemplate = async (contents) => {
 }
 
 const patchComplexTypes = (contents) =>
-  // __metadata("design:type", typeof (_e = typeof import_substrate2.LogLevel !== "undefined" && import_substrate2.LogLevel) === "function" ? _e : Object)
   contents.replaceAll(
-    /__metadata\("design:type", typeof \(_\w+ = typeof ([^ ]+).+\n/g,
+    /__metadata\("design:type", typeof \(_\w+ = typeof (\w+\.\w+|Array|String|Object|Number|null|RegExp|Date|Map|Set) .+\n/g,
     (_, $1) => `__metadata("design:type", ${$1})\n`,
   )

@@ -209,10 +209,12 @@ test.only('patchContents() simplifies complex openapi types', async () => {
   const input = `
   __metadata("design:type", typeof (_d = typeof Array !== "undefined" && Array) === "function" ? _d : Object)
   __metadata("design:type", typeof (_e = typeof import_substrate2.LogLevel !== "undefined" && import_substrate2.LogLevel) === "function" ? _e : Object)
+  __metadata("design:type", typeof (_a3 = typeof Record !== "undefined" && Record) === "function" ? _a3 : Object)
 `
   const expected = `
   __metadata("design:type", Array)
   __metadata("design:type", import_substrate2.LogLevel)
+  __metadata("design:type", typeof (_a3 = typeof Record !== "undefined" && Record) === "function" ? _a3 : Object)
 `
   const output = await patchContents(input, { openapiComplexTypes: true })
 
