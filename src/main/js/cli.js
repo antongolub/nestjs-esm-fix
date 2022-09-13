@@ -27,8 +27,13 @@ if (argv.help || argv.h) {
     nestjs-esm-fix <directory> [options]
     
   Options:
-    --openapi-var       Inject openapi variable. Defaults to true, set 'no-' prefix to disable.
-    --importify         Replace 'require' with 'import' API if possible. Defaults to true
+    --openapi-complex-types     Simplify __metadata("design:type" declarations. Defaults to true, set 'no-' prefix to disable.
+    --openapi-meta      Restore static OPENAPI_METADATA_FACTORY if missing. (true)
+    --openapi-var       Inject openapi variable. (true)
+    --dirname-var       Inject __dirname variable polyfill. (true)
+    --importify         Replace 'require' with 'import' API if possible. (true)
+    --require-main      Inject 'main' field for 'require' API polyfill. (true)
+    --redoc-tpl         Inject 'redoc.hbs' templates.
     --cwd -C            Working directory. Defaults to process.cwd()
     --target            Pattern to match files to fix. Defaults to '**/*'
     --help -h           Show help
@@ -45,10 +50,9 @@ if (argv.help || argv.h) {
 } else {
   await fix(
     densify({
+      ...argv,
       cwd: argv.cwd || argv.C,
       target: argv.target || argv._[0],
-      openapiVar: argv.openapiVar,
-      openapiTypeRef: argv.openapiTypeRef,
     }),
   )
 }

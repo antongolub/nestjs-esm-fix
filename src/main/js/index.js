@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { extname } from 'node:path'
 
 export const defaults = {
+  openapiComplexTypes: true,
   openapiMeta: true,
   openapiVar: true,
   dirnameVar: true,
@@ -45,6 +46,10 @@ export const patchContents = async (contents, opts = {}) => {
 
   if (opts.openapiVar) {
     _contents = patchOpenapiVariable(_contents)
+  }
+
+  if (opts.openapiComplexTypes) {
+    _contents = patchComplexTypes(_contents)
   }
 
   if (opts.importClasses || opts.importify) {
@@ -229,3 +234,10 @@ const patchRedocTemplate = async (contents) => {
     `const redocHTML = yield hbs._renderTemplate(hbs._compileTemplate(\`${tpl}\`), renderData, { helpers: { toJSON(object) { return JSON.stringify(object); }}});`,
   )
 }
+
+const patchComplexTypes = (contents) =>
+  // __metadata("design:type", typeof (_e = typeof import_substrate2.LogLevel !== "undefined" && import_substrate2.LogLevel) === "function" ? _e : Object)
+  contents.replaceAll(
+    /__metadata\("design:type", typeof \(_\w+ = typeof ([^ ]+).+\n/g,
+    (_, $1) => `__metadata("design:type", ${$1})\n`,
+  )

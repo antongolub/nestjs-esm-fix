@@ -63,6 +63,14 @@ var Meta = class {
 };
 ```
 
+6. Extra type wrappers cannot be processed by openapi / `class-validator` / `class-transformer`
+```js
+  __metadata("design:type", typeof (_d = typeof Array !== "undefined" && Array) === "function" ? _d : Object)
+  __metadata("design:type", typeof (_e = typeof import_substrate2.LogLevel !== "undefined" && import_substrate2.LogLevel) === "function" ? _e : Object)
+  // →
+  __metadata("design:type", Array)
+  __metadata("design:type", import_substrate2.LogLevel)
+```
 
 ## Solution
 Old good monkey patching.
@@ -79,16 +87,17 @@ nestjs-esm-fix target/**/*.js
 nestjs-esm-fix --target=target/**/*.js
 nestjs-esm-fix --target=**/* --cwd=target
 ```
-| Option           | Description                                                                                                            | Default         |
-|------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
-| `--target`       | Pattern to match files to fix.                                                                                         | `**/*`          |
-| `--cwd`          | Current working dir                                                                                                    | `process.cwd()` |
-| `--openapi-meta` | Restore `static OPENAPI_METADATA_FACTORY` if missing.                                                                  | `true`          |
-| `--openapi-var`  | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
-| `--dirname-var`  | Inject `__dirname` and `__filename` polyfills.                                                                         | `true`          |
-| `--importify`    | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
-| `--require-main` | Inject `main` field for `require` API polyfill                                                                         | `true`          |
-| `--redoc-tpl`    | Inject `redoc.hbs` templates                                                                                           | `true`          |
+| Option                    | Description                                                                                                            | Default         |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `--target`                | Pattern to match files to fix.                                                                                         | `**/*`          |
+| `--cwd`                   | Current working dir.                                                                                                   | `process.cwd()` |
+| `--openapi-complex-types` | Simplify `__metadata("design:type")` declarations.                                                                     | `true`          |
+| `--openapi-meta`          | Restore `static OPENAPI_METADATA_FACTORY` if missing.                                                                  | `true`          |
+| `--openapi-var`           | Inject openapi variable. Set `--no-openapi-var` to disable.                                                            | `true`          |
+| `--dirname-var`           | Inject `__dirname` and `__filename` polyfills.                                                                         | `true`          |
+| `--importify`             | Replace `require` with `import` API for Nodejs builtins. Replace `type: () => require(smth)` statements with `import`. | `true`          |
+| `--require-main`          | Inject `main` field for `require` API polyfill.                                                                        | `true`          |
+| `--redoc-tpl`             | Inject `redoc.hbs` templates.                                                                                          | `true`          |
 
 ### JS API
 ```js
