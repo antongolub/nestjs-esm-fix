@@ -1,3 +1,8 @@
+## [1.5.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.1...v1.5.2) (2022-09-13)
+
+### Fixes & improvements
+* fix: fix ([](https://github.com/antongolub/nestjs-esm-fix/commit/c3f948e))
+
 ## [1.5.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.0...v1.5.1) (2022-09-13)
 
 ### Fixes & improvements
