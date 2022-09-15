@@ -105,11 +105,13 @@ import { fix } from 'nestjs-esm-fix'
 await fix({
   cwd: '.',
   target: 'target/**/*.js',
+  openapiComplexTypes: true,
   openapiVar: true,
   openapiMeta: true,
   dirnameVar: true,
   importify: true,
-  requireMain: true
+  requireMain: true,
+  redocTpl: true
 })
 ```
 

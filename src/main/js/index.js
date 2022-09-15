@@ -28,8 +28,6 @@ export const fix = async ({ target, cwd = process.cwd(), ..._opts }) => {
   const files = await globby(pattern, { onlyFiles: true, absolute: true, cwd })
 
   await Promise.all(files.map((file) => patch(file, opts)))
-
-  return ''
 }
 
 export const patch = async (file, opts) => {
