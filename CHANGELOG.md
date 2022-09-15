@@ -1,3 +1,12 @@
+## [1.6.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.2...v1.6.0) (2022-09-15)
+
+### Fixes & improvements
+* refactor: separate patch module ([9be878b](https://github.com/antongolub/nestjs-esm-fix/commit/9be878b0ef16ea72c38ec81aa2f48e64497bf374))
+* docs: update JS API usage example ([a5cb7bb](https://github.com/antongolub/nestjs-esm-fix/commit/a5cb7bb3ed58c35a5153e946d1fe72597a6a2047))
+
+### Features
+* feat: add TS libdefs ([858ff71](https://github.com/antongolub/nestjs-esm-fix/commit/858ff7175b18eaa66ed0401fcfcde9eebdaa7280))
+
 ## [1.5.2](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.1...v1.5.2) (2022-09-13)
 
 ### Fixes & improvements
