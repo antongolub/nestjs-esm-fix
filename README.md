@@ -8,11 +8,12 @@
 > ⚠️ This is a temporary solution until Nestjs is fixed
 
 ## Stack
-* [Nestjs 9.x](https://github.com/nestjs/nest)
+* [Nestjs 9.x](https://github.com/nestjs/nest). <sub>_10.x and above were not tested at all_</sub>
 * [esbuild 0.15.x](https://github.com/evanw/esbuild)
 
 ## Problems
 > https://github.com/nestjs/nest-cli/issues/1157
+> https://github.com/nestjs/swagger/issues/1450
 > https://github.com/evanw/esbuild/pull/509
 > https://github.com/evanw/esbuild/issues/566
 
