@@ -1,3 +1,9 @@
+## [1.6.1](https://github.com/antongolub/nestjs-esm-fix/compare/v1.6.0...v1.6.1) (2023-08-30)
+
+### Fixes & improvements
+* fix: nestjs-redoc is not dev dep ([946a586](https://github.com/antongolub/nestjs-esm-fix/commit/946a58604c4a29082703c3aafeee2f3987721c13))
+* docs: specify nestjs compat range ([c1aee44](https://github.com/antongolub/nestjs-esm-fix/commit/c1aee44f9a71b304694fdf26680418a8d5cf47c5))
+
 ## [1.6.0](https://github.com/antongolub/nestjs-esm-fix/compare/v1.5.2...v1.6.0) (2022-09-15)
 
 ### Fixes & improvements
